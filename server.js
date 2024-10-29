@@ -1,5 +1,5 @@
 const express = require("express");
-const connectDB = require("./Db/mongo");
+const connectDB = require("./Config/mongo");
 const corsMiddleware = require("./Middlewares/cors");
 const app = express();
 app.use(express.urlencoded({ extended: true }));
