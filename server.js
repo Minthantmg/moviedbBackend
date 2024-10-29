@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const connectDB = require("./Db/mongo");
 const corsMiddleware = require("./Middlewares/cors");
 const app = express();
