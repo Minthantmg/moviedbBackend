@@ -1,6 +1,6 @@
 const express = require("express");
-const connectDB = require("./Config/mongo");
-const corsMiddleware = require("./Middlewares/cors");
+const connectDB = require("./config/mongo");
+const corsMiddleware = require("./middlewares/cors");
 const movieRouter = require("./routes/movie.route");
 const port = 4000;
 
