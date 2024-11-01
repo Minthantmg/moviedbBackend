@@ -19,8 +19,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 8,
-        select: false, // do not return the password field by default
+        select: false,
     },
 }, {
     timestamps: true, // automatically adds createdAt and updatedAt fields
 });
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
