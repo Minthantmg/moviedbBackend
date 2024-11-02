@@ -18,8 +18,17 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const login = async (req, res) => {
+    try{
+        console.log("entered")
+    }catch(error){
+        res.status(500).json({message: error.message});
+    }
+}
+
 module.exports = {
     createUser,
-    getAllUsers
+    getAllUsers,
+    login
 };
 
