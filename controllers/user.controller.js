@@ -52,8 +52,6 @@ const login = async (req, res) => {
     }
 };
 
-
-
 const getUserById = async (req, res) => {
     try{
         const user = await User.findById(req.params.id);
@@ -66,11 +64,30 @@ const getUserById = async (req, res) => {
     }
 }
 
+const deleteUserById = async (req,res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user){
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        await user.deleteOne()
+        res.send({
+            message: "Deleted Successful",
+            statusCode: 200,
+            data: user,
+        });
+    }catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 
 module.exports = {
     createUser,
     getAllUsers,
     login,
-    getUserById
+    getUserById,
+    deleteUserById
 };
 
