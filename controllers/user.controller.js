@@ -1,9 +1,18 @@
 const User = require('../models/user')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const createUser = async (req, res) => {
     try {
-        const user = await User.create(req.body);
-        res.status(200).json(user);
+        const { name, email, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const newUser = new User({
+            name,
+            email,
+            password: hashedPassword
+        });
+        await newUser.save();
+        res.status(201).send({ message: "User created successfully" });
     } catch (error) {
         res.status(500).json({message: error.message});
     }
@@ -19,27 +28,49 @@ const getAllUsers = async (req, res) => {
 }
 
 const login = async (req, res) => {
+    const { email, password } = req.body;
+
     try {
-        console.log(req.body);
+        const user = await User.findOne({ email }).select('+password');
 
-        const user = await User.findOne({ email: req.body.email });
+        if (user) {
+            const isPasswordMatch = await bcrypt.compare(password, user.password);
+            if (isPasswordMatch) {
+                res.send({
+                    message: "Authentication Successful",
+                    statusCode: 200,
+                    data: user,
+                });
+            } else {
+                res.status(401).send({ message: "Authentication Failed" });
+            }
+        } else {
+            res.status(401).send({ message: "Authentication Failed" });
+        }
+    } catch (error) {
+        res.status(500).send({ message: "Internal Server Error" });
+    }
+};
 
+
+
+const getUserById = async (req, res) => {
+    try{
+        const user = await User.findById(req.params.id);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-
         res.status(200).json(user);
-        console.log("User found:", user);
-    } catch (error) {
-        console.error("Error occurred during login:", error);
+    }catch (error) {
         res.status(500).json({ message: error.message });
     }
-};
+}
 
 
 module.exports = {
     createUser,
     getAllUsers,
-    login
+    login,
+    getUserById
 };
 
