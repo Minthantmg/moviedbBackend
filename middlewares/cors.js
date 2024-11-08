@@ -1,6 +1,6 @@
 const cors = require("cors")
 
-const allowedOrigins = ["http://localhost:3000","moviedb-dashboard.vercel.app"]
+const allowedOrigins = ["http://localhost:3000","https://moviedb-dashboard.vercel.app"]
 
 const corsOptions = {
     //origin=incoming req
