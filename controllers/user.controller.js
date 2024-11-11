@@ -86,22 +86,27 @@ const deleteUserById = async (req,res) => {
     }
 }
 
-const updateUserById = async (req,res) =>{
-    try{
-        const user = await User.findByIdAndUpdate(req.params.id);
-        if (!user){
+const updateUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updateData = req.body;
+
+        const user = await User.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+
+        if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        await user.save();
+
         res.status(200).json({
-            message: "Updated Successful",
+            message: "Update Successful",
             statusCode: 200,
             data: user,
         });
-    }catch(error){
+    } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
+
 
 module.exports = {
     createUser,
