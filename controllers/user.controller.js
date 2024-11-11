@@ -76,7 +76,7 @@ const deleteUserById = async (req,res) => {
         }
 
         await user.deleteOne()
-        res.send({
+        res.status(200).json({
             message: "Deleted Successful",
             statusCode: 200,
             data: user,
@@ -86,12 +86,29 @@ const deleteUserById = async (req,res) => {
     }
 }
 
+const updateUserById = async (req,res) =>{
+    try{
+        const user = await User.findByIdAndUpdate(req.params.id);
+        if (!user){
+            return res.status(404).json({ message: "User not found" });
+        }
+        await user.save();
+        res.send({
+            message: "Updated Successful",
+            statusCode: 200,
+            data: user,
+        });
+    }catch(error){
+        res.status(500).json({ message: error.message });
+    }
+}
 
 module.exports = {
     createUser,
     getAllUsers,
     login,
     getUserById,
-    deleteUserById
+    deleteUserById,
+    updateUserById
 };
 
