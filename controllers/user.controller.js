@@ -93,7 +93,7 @@ const updateUserById = async (req,res) =>{
             return res.status(404).json({ message: "User not found" });
         }
         await user.save();
-        res.send({
+        res.status(200).json({
             message: "Updated Successful",
             statusCode: 200,
             data: user,
